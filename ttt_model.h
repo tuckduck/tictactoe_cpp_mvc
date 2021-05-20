@@ -33,8 +33,20 @@ class ttt_model {
                 if (count1 == boardsize || count3 == boardsize) {return 1;}
                 if (count2 == boardsize || count4 == boardsize) {return 2;}
             }
+            //diagonal check
+            count1 = 0;
+            count2 = 0;
+            count3 = 0;
+            count4 = 0;
+            for(i=0;i<boardsize;i++) {
+                if(board[i * boardsize + i] == player1) {count1++;}
+                if(board[i * boardsize + i] == player2) {count2++;}
+                if(board[i * boardsize + boardsize - i - 1] == player1) {count3++;}
+                if(board[i * boardsize + boardsize - i - 1] == player2) {count4++;}
+            }
+            if (count1 == boardsize || count3 == boardsize) {return 1;}
+            if (count2 == boardsize || count4 == boardsize) {return 2;}
             return 0;
-
         }
         bool processMove(int row, int column, int boardsize, char player) {
             if (board[row * boardsize + column] != ' ') {
