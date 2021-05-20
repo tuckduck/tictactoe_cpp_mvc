@@ -6,12 +6,13 @@ using namespace std;
 class ttt_view {
     private:
         ttt_model model;
-        int players, difficulty, boardsize, quit = 0;
+        int players, difficulty, boardsize, winner = 0, quit = 0;
         void reset() {
             players = 0;
             difficulty = 0;
             boardsize = 0;
             quit = 0;
+            winner = 0;
         }
         void initMenu(){
             system("clear");
@@ -39,6 +40,7 @@ class ttt_view {
                     cin.clear();
                 }
             }
+            model.init(boardsize);
         }
         void formatBoard(char* boardstate) {
             int i,j;
@@ -67,15 +69,47 @@ class ttt_view {
                     quit = 1;
                 }
         }
+        void gameLoop() {
+            formatBoard(model.getBoardState());
+            int ans1, ans2;
+            int turn = 1;
+            char player1 = 'X';
+            char player2 = 'O';
+            while(!(winner == 1 || winner == 2)) {
+                while(true) {
+                    printf("Input Player %s Move Row\n", (turn == 1) ? "One" : "Two"); 
+                    cin >> ans1;
+                    if(cin.fail() || ans1 >= boardsize) {
+                        printf("Invalid Move\n");
+                        cin.clear();
+                        continue;
+                    }
+                    printf("Input Player %s Move Column\n", (turn == 1) ? "One" : "Two"); 
+                    cin >> ans2;
+                    if(cin.fail() || ans2 >= boardsize) {
+                        printf("Invalid Move\n");
+                        cin.clear();
+                        continue;
+                    }
+                    break;
+                }
+                if(!model.processMove(ans1, ans2, boardsize,(turn == 1)?player1:player2)) {
+                    printf("That spot is already taken! \n");
+                    continue;
+                }
+                winner = model.winCheck('X', 'O', boardsize);
+                formatBoard(model.getBoardState());
+                turn = (turn  == 1) ? 2 : 1;
+            }
+            (winner == 1) ? printf("Player One Won!!!\n") : printf("Player Two Won!!!\n");
+        }
     public:
         void start() {
             std::cout << "Init view \n";
-            players = -1;
             while(quit == 0) {
                 reset();
                 initMenu();
-                model.init(boardsize);
-                formatBoard(model.getBoardState());
+                gameLoop();
                 endgameMenu();
             }
         }
