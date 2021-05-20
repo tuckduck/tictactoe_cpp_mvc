@@ -2,6 +2,7 @@
 
 #include "ttt_view.h"
 #include "ttt_model.h"
+#include "A_v2m.h"
 
 using namespace std;
 class ttt_controller {
