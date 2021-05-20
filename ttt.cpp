@@ -1,7 +1,7 @@
-#include "ttt_controller.h"
 #include "iostream"
+#include "ttt_view.h"
 int main(void) {
-    ttt_controller controller;
-    controller.start();
+    ttt_view game;
+    game.start();
     return 0; 
 }
